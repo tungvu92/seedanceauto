@@ -740,7 +740,8 @@
           <input type="email" id="ofEmail" name="email" autocomplete="email">
         </div>
 
-        <button type="submit" class="btn btn-primary modal-submit">Xác Nhận Đăng Ký</button>
+        <div class="form-error" id="formError" style="display:none;color:#ff7a7a;font-size:13px;margin-bottom:14px;"></div>
+        <button type="submit" class="btn btn-primary modal-submit" id="submitBtn">Xác Nhận Đăng Ký</button>
         <div class="modal-fine">Sau khi đăng ký, bạn sẽ nhận hướng dẫn thanh toán và kích hoạt.</div>
       </form>
     </div>
@@ -795,6 +796,7 @@
   function openOrderModal(planKey){
     orderForm.reset();
     document.querySelectorAll('.form-field').forEach(function(f){ f.classList.remove('invalid'); });
+    document.getElementById('formError').style.display = 'none';
     formView.style.display = 'block';
     successView.style.display = 'none';
     selectPlan(planKey || 'yearly');
@@ -833,13 +835,16 @@
     if (e.key === 'Escape' && overlay.classList.contains('open')) closeOrderModal();
   });
 
-  orderForm.addEventListener('submit', function(e){
+  orderForm.addEventListener('submit', async function(e){
     e.preventDefault();
 
     var nameField = document.getElementById('fieldName');
     var phoneField = document.getElementById('fieldPhone');
     var nameInput = document.getElementById('ofName');
     var phoneInput = document.getElementById('ofPhone');
+    var emailInput = document.getElementById('ofEmail');
+    var errorBox = document.getElementById('formError');
+    var submitBtn = document.getElementById('submitBtn');
     var valid = true;
 
     if (!nameInput.value.trim()){ nameField.classList.add('invalid'); valid = false; }
@@ -848,18 +853,45 @@
     if (!phoneInput.value.trim()){ phoneField.classList.add('invalid'); valid = false; }
     else { phoneField.classList.remove('invalid'); }
 
+    errorBox.style.display = 'none';
     if (!valid) return;
 
     var planKey = document.querySelector('input[name="plan"]:checked').value;
-    var code = 'SDA' + Date.now().toString().slice(-6);
 
-    document.getElementById('successPlanLine').textContent = PLAN_INFO[planKey].line;
-    document.getElementById('successCode').textContent = code;
-    document.getElementById('paidSteps').style.display = planKey === 'free' ? 'none' : 'flex';
-    document.getElementById('freeSteps').style.display = planKey === 'free' ? 'flex' : 'none';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Đang gửi...';
 
-    formView.style.display = 'none';
-    successView.style.display = 'block';
+    try {
+      var res = await fetch('/api/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: nameInput.value.trim(),
+          phone: phoneInput.value.trim(),
+          email: emailInput.value.trim(),
+          plan: planKey
+        })
+      });
+      var payload = await res.json();
+
+      if (!res.ok || !payload.ok) {
+        throw new Error(payload.error || 'Có lỗi xảy ra, vui lòng thử lại.');
+      }
+
+      document.getElementById('successPlanLine').textContent = PLAN_INFO[planKey].line;
+      document.getElementById('successCode').textContent = payload.order.order_code;
+      document.getElementById('paidSteps').style.display = planKey === 'free' ? 'none' : 'flex';
+      document.getElementById('freeSteps').style.display = planKey === 'free' ? 'flex' : 'none';
+
+      formView.style.display = 'none';
+      successView.style.display = 'block';
+    } catch (err) {
+      errorBox.textContent = err.message || 'Không thể kết nối máy chủ, vui lòng thử lại.';
+      errorBox.style.display = 'block';
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Xác Nhận Đăng Ký';
+    }
   });
 
   document.querySelectorAll('.faq-item').forEach(function(item){
