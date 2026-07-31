@@ -64,5 +64,6 @@ module.exports = async (req, res) => {
   }
 
   console.error('create-order failed:', lastError);
-  res.status(500).json({ ok: false, error: 'Không thể tạo đơn hàng, vui lòng thử lại.' });
+  const debugInfo = lastError ? `[${lastError.code || '?'}] ${lastError.message || lastError}` : 'unknown';
+  res.status(500).json({ ok: false, error: `Không thể tạo đơn hàng: ${debugInfo}` });
 };
