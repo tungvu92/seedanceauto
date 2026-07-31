@@ -37,25 +37,26 @@ module.exports = async (req, res) => {
 
   const amount = PLAN_PRICES[plan];
 
+  const status = plan === 'free' ? 'fulfilled' : 'pending';
+
   let lastError = null;
   for (let attempt = 0; attempt < 3; attempt++) {
     const orderCode = generateOrderCode();
-    const { data, error } = await supabase
-      .from('orders')
-      .insert({
-        order_code: orderCode,
-        customer_name: name,
-        customer_phone: phone,
-        customer_email: email || null,
-        plan,
-        amount,
-        status: plan === 'free' ? 'fulfilled' : 'pending',
-      })
-      .select('order_code, plan, amount, status')
-      .single();
+    // No .select() here: the anon key is insert-only on `orders` (it cannot
+    // read rows back), so the response is built from values already known
+    // server-side instead of asking Postgres to return the inserted row.
+    const { error } = await supabase.from('orders').insert({
+      order_code: orderCode,
+      customer_name: name,
+      customer_phone: phone,
+      customer_email: email || null,
+      plan,
+      amount,
+      status,
+    });
 
     if (!error) {
-      res.status(200).json({ ok: true, order: data });
+      res.status(200).json({ ok: true, order: { order_code: orderCode, plan, amount, status } });
       return;
     }
 
@@ -64,6 +65,5 @@ module.exports = async (req, res) => {
   }
 
   console.error('create-order failed:', lastError);
-  const debugInfo = lastError ? `[${lastError.code || '?'}] ${lastError.message || lastError}` : 'unknown';
-  res.status(500).json({ ok: false, error: `Không thể tạo đơn hàng: ${debugInfo}` });
+  res.status(500).json({ ok: false, error: 'Không thể tạo đơn hàng, vui lòng thử lại.' });
 };
