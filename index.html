@@ -391,13 +391,98 @@
   .modal-overlay.open{display:flex;}
   .modal-box{
     position:relative;
-    width:100%;max-width:440px;max-height:88vh;overflow-y:auto;
+    width:100%;max-width:580px;max-height:90dvh;overflow-y:auto;
     background:var(--card);
     border:1px solid var(--border);
     border-radius:18px;
     padding:32px;
     box-shadow:0 40px 100px -30px rgba(0,0,0,0.7);
   }
+  @media(max-width:640px){
+    .modal-overlay{padding:8px;}
+    .modal-box{padding:20px;max-height:92dvh;border-radius:16px;}
+    .modal-box .btn{min-height:48px;}
+  }
+
+  .step-indicator{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:24px;}
+  .step-indicator .step-item{display:flex;align-items:center;gap:6px;}
+  .step-indicator .step-dot{
+    width:26px;height:26px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:800;
+    background:var(--bg-alt);color:var(--muted);border:1px solid var(--border);
+    font-family:"SF Mono",SFMono-Regular,Consolas,Menlo,monospace;
+  }
+  .step-indicator .step-label{font-size:11.5px;color:var(--muted);white-space:nowrap;}
+  .step-indicator .step-line{width:22px;height:1px;background:var(--border);flex-shrink:0;}
+  .step-indicator .step-item.active .step-dot{background:var(--accent-grad);color:#1a1005;border-color:transparent;}
+  .step-indicator .step-item.active .step-label{color:var(--text);font-weight:700;}
+  .step-indicator .step-item.done .step-dot{background:rgba(61,220,132,0.15);color:var(--green);border-color:rgba(61,220,132,0.3);}
+  .step-indicator-mobile{display:none;text-align:center;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:18px;}
+  @media(max-width:480px){
+    .step-indicator{display:none;}
+    .step-indicator-mobile{display:block;}
+  }
+  .modal-box.no-stepper .step-indicator,
+  .modal-box.no-stepper .step-indicator-mobile{display:none;}
+
+  .plan-summary{
+    background:var(--bg-alt);border:1px solid var(--border);border-radius:14px;
+    padding:20px;margin-bottom:22px;position:relative;
+  }
+  .plan-summary .ps-eyebrow{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:8px;}
+  .plan-summary .ps-badge{
+    display:inline-block;background:var(--accent-grad);color:#1a1005;
+    font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;
+    padding:3px 10px;border-radius:999px;margin-bottom:8px;
+  }
+  .plan-summary h3{font-size:18px;margin-bottom:4px;padding-right:70px;}
+  .plan-summary .ps-price{font-size:24px;font-weight:800;font-variant-numeric:tabular-nums;margin-bottom:2px;}
+  .plan-summary .ps-price small{font-size:13px;font-weight:600;color:var(--muted);}
+  .plan-summary .ps-note{font-size:12px;color:var(--muted);}
+  .plan-summary .ps-tagline{font-size:13px;color:var(--muted-2);margin:10px 0 12px;}
+  .plan-summary .ps-features{display:flex;flex-direction:column;gap:7px;margin-bottom:10px;}
+  .plan-summary .ps-features div{display:flex;gap:8px;font-size:12.5px;color:var(--muted-2);}
+  .plan-summary .ps-features .tick{color:var(--green);flex-shrink:0;}
+  .plan-summary .ps-total{
+    display:flex;justify-content:space-between;align-items:center;
+    border-top:1px solid var(--border);padding-top:12px;margin-top:12px;
+    font-size:13.5px;color:var(--muted-2);
+  }
+  .plan-summary .ps-total b{color:var(--text);font-size:16px;font-variant-numeric:tabular-nums;}
+  .plan-summary .ps-change{
+    position:absolute;top:20px;right:20px;
+    font-size:12px;color:var(--accent-cool);background:none;border:none;cursor:pointer;
+    font-weight:700;text-decoration:underline;
+  }
+  .plan-summary .ps-change:hover{color:var(--accent);}
+
+  .pay-info-card{background:var(--bg-alt);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin-bottom:16px;}
+  .pay-info-card .pi-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;font-size:13px;}
+  .pay-info-card .pi-row + .pi-row{border-top:1px solid var(--border);}
+  .pay-info-card .pi-label{color:var(--muted);}
+  .pay-info-card .pi-value{color:var(--text);font-weight:700;text-align:right;font-variant-numeric:tabular-nums;}
+  .pay-info-card .pi-value.mono{font-family:"SF Mono",SFMono-Regular,Consolas,Menlo,monospace;}
+
+  #qrBlock{text-align:center;margin-bottom:16px;}
+  #qrImg{width:100%;max-width:230px;border-radius:12px;border:1px solid var(--border);display:block;margin:0 auto;background:#fff;}
+
+  .copy-row{display:flex;align-items:center;gap:8px;background:var(--card-alt);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:16px;}
+  .copy-row .cr-text{flex:1;font-family:"SF Mono",SFMono-Regular,Consolas,Menlo,monospace;font-size:13px;color:var(--accent);word-break:break-all;}
+  .copy-btn{flex-shrink:0;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:12px;font-weight:700;padding:8px 12px;border-radius:8px;cursor:pointer;min-height:36px;}
+  .copy-btn:hover{border-color:rgba(242,169,59,0.4);}
+  .copy-btn.copied{color:var(--green);border-color:rgba(61,220,132,0.4);}
+
+  .status-row{display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:700;margin:4px 0 6px;}
+  .status-spinner{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);border-top-color:var(--accent);animation:seedance-spin 0.8s linear infinite;flex-shrink:0;}
+  @keyframes seedance-spin{to{transform:rotate(360deg);}}
+  @media(prefers-reduced-motion:reduce){.status-spinner{animation:none;}}
+
+  .btn-row{display:flex;gap:10px;margin-top:18px;}
+  .btn-row .btn{flex:1;}
+
+  .support-row{text-align:center;margin-top:20px;padding-top:18px;border-top:1px solid var(--border);}
+  .support-row p{font-size:12.5px;color:var(--muted);margin-bottom:10px;}
   .modal-close{
     position:absolute;top:16px;right:16px;
     width:32px;height:32px;border-radius:50%;
@@ -409,17 +494,6 @@
   .modal-close:focus-visible{outline:2px solid var(--accent-cool);outline-offset:2px;}
   .modal-title{font-size:20px;font-weight:800;margin-bottom:6px;padding-right:24px;}
   .modal-sub{font-size:13.5px;color:var(--muted);margin-bottom:22px;}
-
-  .plan-select{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
-  .plan-opt{
-    display:flex;align-items:center;justify-content:space-between;gap:12px;
-    border:1px solid var(--border);border-radius:12px;padding:12px 14px;
-    background:var(--bg-alt);cursor:pointer;
-  }
-  .plan-opt.checked{border-color:rgba(242,169,59,0.5);background:rgba(242,169,59,0.07);}
-  .plan-opt-left{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--muted-2);}
-  .plan-opt input{accent-color:var(--accent);width:16px;height:16px;flex-shrink:0;}
-  .plan-opt-price{font-size:13px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap;}
 
   .form-field{margin-bottom:16px;}
   .form-field label{display:block;font-size:12.5px;font-weight:700;color:var(--muted-2);margin-bottom:6px;}
@@ -443,21 +517,6 @@
   }
   .order-success h3{font-size:19px;margin-bottom:6px;}
   .order-success .desc{color:var(--muted);font-size:13.5px;margin-bottom:6px;}
-  .order-code-box{
-    background:var(--bg-alt);border:1px dashed rgba(242,169,59,0.45);
-    border-radius:12px;padding:14px;margin:18px 0;
-  }
-  .order-code-box .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
-  .order-code-box .code{font-family:"SF Mono",SFMono-Regular,Consolas,Menlo,monospace;font-size:20px;font-weight:800;color:var(--accent);letter-spacing:0.04em;}
-  .order-steps{text-align:left;font-size:13.5px;color:var(--muted-2);display:flex;flex-direction:column;gap:10px;margin:18px 0 20px;}
-  .order-steps div{display:flex;gap:10px;}
-  .order-steps .step-num{
-    flex-shrink:0;width:20px;height:20px;border-radius:50%;
-    background:var(--card-alt);color:var(--accent);
-    font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;
-    font-family:"SF Mono",SFMono-Regular,Consolas,Menlo,monospace;
-  }
-  .order-steps b{color:var(--text);}
   .zalo-btn{width:100%;}
 </style>
 </head>
@@ -792,257 +851,590 @@
 
 <!-- ORDER MODAL -->
 <div class="modal-overlay" id="orderOverlay">
-  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitleStep1" id="modalBox">
     <button class="modal-close" id="modalCloseBtn" aria-label="Đóng">✕</button>
 
-    <div id="orderFormView">
-      <div class="modal-title" id="modalTitle">Đăng Ký Nhận Phần Mềm</div>
-      <div class="modal-sub">Chọn gói phù hợp và để lại thông tin, chúng tôi sẽ liên hệ kích hoạt ngay.</div>
+    <div class="step-indicator" id="stepIndicator">
+      <div class="step-item" data-step="1"><span class="step-dot">1</span><span class="step-label">Thông tin</span></div>
+      <span class="step-line"></span>
+      <div class="step-item" data-step="2"><span class="step-dot">2</span><span class="step-label">Thanh toán</span></div>
+      <span class="step-line"></span>
+      <div class="step-item" data-step="3"><span class="step-dot">3</span><span class="step-label">Hoàn tất</span></div>
+    </div>
+    <div class="step-indicator-mobile" id="stepIndicatorMobile">Bước 1/3</div>
+
+    <!-- STEP 1: plan summary + registration form -->
+    <div id="stepInfo">
+      <div class="modal-title" id="modalTitleStep1">Xác Nhận Đăng Ký</div>
+
+      <div class="plan-summary" id="planSummary"></div>
+
+      <div style="font-weight:700;color:var(--text);font-size:14px;margin-bottom:14px;">Thông Tin Đăng Ký</div>
 
       <form id="orderForm" novalidate>
-        <div class="plan-select">
-          <label class="plan-opt" data-plan-opt="free">
-            <span class="plan-opt-left"><input type="radio" name="plan" value="free">Miễn phí — Dùng thử</span>
-            <span class="plan-opt-price">0đ</span>
-          </label>
-          <label class="plan-opt" data-plan-opt="yearly">
-            <span class="plan-opt-left"><input type="radio" name="plan" value="yearly">Gói năm — Không giới hạn</span>
-            <span class="plan-opt-price">1.999.000đ</span>
-          </label>
-          <label class="plan-opt" data-plan-opt="monthly">
-            <span class="plan-opt-left"><input type="radio" name="plan" value="monthly">Gói tháng — Mở rộng</span>
-            <span class="plan-opt-price">199.000đ</span>
-          </label>
-        </div>
-
         <div class="form-field" id="fieldName">
           <label for="ofName">Họ và tên</label>
-          <input type="text" id="ofName" name="name" autocomplete="name">
-          <div class="err">Vui lòng nhập họ tên.</div>
+          <input type="text" id="ofName" name="name" autocomplete="name" placeholder="Nhập họ và tên" aria-describedby="errName">
+          <div class="err" id="errName">Vui lòng nhập họ và tên.</div>
         </div>
         <div class="form-field" id="fieldPhone">
-          <label for="ofPhone">Số điện thoại / Zalo</label>
-          <input type="tel" id="ofPhone" name="phone" autocomplete="tel">
-          <div class="err">Vui lòng nhập số điện thoại.</div>
+          <label for="ofPhone">Số điện thoại/Zalo</label>
+          <input type="tel" inputmode="tel" id="ofPhone" name="phone" autocomplete="tel" placeholder="Nhập số Zalo để nhận hướng dẫn" aria-describedby="errPhone">
+          <div class="err" id="errPhone">Vui lòng nhập số điện thoại/Zalo.</div>
         </div>
-        <div class="form-field">
-          <label for="ofEmail">Email (không bắt buộc)</label>
-          <input type="email" id="ofEmail" name="email" autocomplete="email">
+        <div class="form-field" id="fieldEmail">
+          <label for="ofEmail">Email</label>
+          <input type="email" id="ofEmail" name="email" autocomplete="email" placeholder="Nhập email nếu bạn muốn nhận thông tin qua email" aria-describedby="errEmail">
+          <div class="err" id="errEmail">Email chưa đúng định dạng.</div>
         </div>
 
-        <div class="form-error" id="formError" style="display:none;color:#ff7a7a;font-size:13px;margin-bottom:14px;"></div>
-        <button type="submit" class="btn btn-primary modal-submit" id="submitBtn">Xác Nhận Đăng Ký</button>
-        <div class="modal-fine">Sau khi đăng ký, bạn sẽ nhận hướng dẫn thanh toán và kích hoạt.</div>
+        <div class="form-error" id="formError" role="alert" style="display:none;color:#ff7a7a;font-size:13px;margin-bottom:14px;"></div>
+        <button type="submit" class="btn btn-primary modal-submit" id="submitBtn">Tiếp Tục</button>
+        <div class="modal-fine" id="submitNote">Sau khi xác nhận, bạn sẽ được chuyển sang bước thanh toán bằng mã QR.</div>
+        <div class="modal-fine">🔒 Thông tin của bạn chỉ được sử dụng để xử lý đăng ký và hỗ trợ Seedance Auto.</div>
       </form>
     </div>
 
-    <div class="order-success" id="orderSuccessView">
+    <!-- STEP 2: SePay QR payment -->
+    <div id="stepPayment" style="display:none;">
+      <div class="modal-title" id="modalTitleStep2">Quét Mã QR Để Thanh Toán</div>
+      <div class="modal-sub">Đơn hàng đã được tạo. Vui lòng quét mã QR bên dưới để hoàn tất thanh toán.</div>
+
+      <div class="pay-info-card">
+        <div class="pi-row"><span class="pi-label">Mã đơn hàng</span><span class="pi-value mono" id="payOrderCode">—</span></div>
+        <div class="pi-row"><span class="pi-label">Gói</span><span class="pi-value" id="payPlanName">—</span></div>
+        <div class="pi-row"><span class="pi-label">Tổng thanh toán</span><span class="pi-value" id="payAmount">—</span></div>
+        <div class="pi-row"><span class="pi-label">Trạng thái</span><span class="pi-value" id="payStatusLabel">Đang chờ thanh toán</span></div>
+      </div>
+
+      <div id="qrBlock">
+        <img id="qrImg" alt="Mã QR thanh toán VietQR — số tiền và nội dung chuyển khoản đã điền sẵn theo đơn hàng">
+        <a id="qrDownload" class="btn btn-ghost" style="width:100%;margin-top:10px;font-size:13px;" download target="_blank" rel="noopener">Lưu Mã QR</a>
+      </div>
+
+      <div class="copy-row">
+        <span class="cr-text" id="payContent">—</span>
+        <button type="button" class="copy-btn" id="copyContentBtn">Sao Chép Nội Dung</button>
+      </div>
+
+      <div class="status-row" id="paymentStatusBox" aria-live="polite">
+        <span class="status-spinner" id="statusSpinner"></span>
+        <span id="paymentStatusText" style="color:var(--muted);">Đang chờ SePay xác nhận thanh toán...</span>
+      </div>
+      <p style="font-size:12px;color:var(--muted);text-align:center;margin:0 0 4px;">Sau khi nhận được giao dịch, hệ thống sẽ tự động xác nhận. Bạn không cần tải lại trang.</p>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" id="backToInfoBtn">Quay lại</button>
+        <button type="button" class="btn btn-ghost" id="checkPaymentBtn">Kiểm Tra Thanh Toán</button>
+      </div>
+
+      <div class="support-row" id="paySupportRow" style="display:none;">
+        <p>Bạn gặp vấn đề khi thanh toán?</p>
+        <a class="btn btn-ghost zalo-btn" id="paySupportBtn" target="_blank" rel="noopener">Liên Hệ Zalo Hỗ Trợ</a>
+      </div>
+    </div>
+
+    <!-- STEP 3: payment confirmed -->
+    <div class="order-success" id="stepSuccess">
       <div class="order-icon">✓</div>
-      <h3>Đăng Ký Thành Công</h3>
-      <div class="desc" id="successPlanLine">Gói năm — Không giới hạn · 1.999.000đ / năm</div>
+      <h3 id="modalTitleStep3">Thanh Toán Thành Công!</h3>
+      <div class="desc">Cảm ơn bạn đã đăng ký Seedance Auto. Thanh toán của bạn đã được xác nhận.</div>
 
-      <div class="order-code-box">
-        <div class="label">Mã đơn hàng</div>
-        <div class="code" id="successCode">SDA000000</div>
-      </div>
-
-      <div id="qrBlock" style="display:none;">
-        <img id="qrImg" alt="Mã QR thanh toán VietQR — nội dung chuyển khoản đã điền sẵn" style="width:100%;max-width:220px;border-radius:12px;border:1px solid var(--border);margin:0 auto 14px;display:block;">
-      </div>
-      <div id="paymentStatusBox" style="display:none;font-size:13px;font-weight:700;margin-bottom:18px;">
-        <span id="paymentStatusText" style="color:var(--muted);">Đang chờ thanh toán…</span>
+      <div class="pay-info-card" style="text-align:left;margin-top:18px;margin-bottom:0;">
+        <div class="pi-row"><span class="pi-label">Mã đơn hàng</span><span class="pi-value mono" id="doneOrderCode">—</span></div>
+        <div class="pi-row"><span class="pi-label">Gói</span><span class="pi-value" id="donePlanName">—</span></div>
+        <div class="pi-row"><span class="pi-label">Số tiền đã thanh toán</span><span class="pi-value" id="doneAmount">—</span></div>
+        <div class="pi-row"><span class="pi-label">Họ tên</span><span class="pi-value" id="doneName">—</span></div>
+        <div class="pi-row"><span class="pi-label">SĐT/Zalo</span><span class="pi-value" id="donePhone">—</span></div>
       </div>
 
-      <div id="paidSteps" class="order-steps">
-        <div><span class="step-num">1</span><span>Quét mã QR ở trên bằng app ngân hàng — số tiền và nội dung đã được điền sẵn.</span></div>
-        <div><span class="step-num">2</span><span>Hệ thống tự động nhận diện thanh toán trong khoảng 1–2 phút, không cần thao tác thêm.</span></div>
-        <div><span class="step-num">3</span><span>Chưa thấy xác nhận sau vài phút? Nhắn Zalo kèm mã đơn hàng ở trên để được hỗ trợ.</span></div>
-      </div>
-      <div id="freeSteps" class="order-steps" style="display:none;">
-        <div><span class="step-num">1</span><span>Chúng tôi sẽ gửi link tải bản dùng thử qua email/Zalo bạn vừa đăng ký trong ít phút.</span></div>
-        <div><span class="step-num">2</span><span>Chưa nhận được? Nhắn Zalo kèm mã đơn hàng ở trên để được hỗ trợ ngay.</span></div>
+      <p style="font-size:13px;color:var(--muted-2);margin:18px 0 14px;">Bấm nút bên dưới để nhận tài khoản Seedance Auto hoặc tham gia nhóm hỗ trợ.</p>
+
+      <a class="btn btn-primary zalo-btn" id="doneAccountBtn" target="_blank" rel="noopener" style="margin-bottom:10px;display:none;">Nhận Tài Khoản Qua Zalo</a>
+      <a class="btn btn-secondary zalo-btn" id="doneGroupBtn" target="_blank" rel="noopener" style="margin-bottom:10px;display:none;">Tham Gia Nhóm Zalo</a>
+      <a class="btn btn-ghost zalo-btn" id="doneSupportBtn" target="_blank" rel="noopener" style="margin-bottom:10px;display:none;">Liên Hệ Zalo Hỗ Trợ</a>
+      <button type="button" class="btn btn-ghost zalo-btn" id="closeSuccessBtn">Đóng</button>
+    </div>
+
+    <!-- Free plan: registration complete (no payment step) -->
+    <div class="order-success" id="stepFreeSuccess">
+      <div class="order-icon">✓</div>
+      <h3 id="modalTitleFreeSuccess">Đăng Ký Dùng Thử Thành Công!</h3>
+      <div class="desc">Cảm ơn bạn đã đăng ký dùng thử Seedance Auto. Bấm nút bên dưới để nhận hướng dẫn cài đặt và sử dụng.</div>
+
+      <div class="pay-info-card" style="text-align:left;margin-top:18px;margin-bottom:0;">
+        <div class="pi-row"><span class="pi-label">Mã đơn hàng</span><span class="pi-value mono" id="freeOrderCode">—</span></div>
+        <div class="pi-row"><span class="pi-label">Họ tên</span><span class="pi-value" id="freeName">—</span></div>
       </div>
 
-      <a class="btn btn-primary zalo-btn" href="https://zalo.me/" target="_blank" rel="noopener">Nhắn Zalo Để Nhận Phần Mềm</a>
-      <button type="button" class="btn btn-ghost zalo-btn" id="backToFormBtn" style="margin-top:10px;">Quay lại</button>
+      <a class="btn btn-primary zalo-btn" id="freeGuideBtn" target="_blank" rel="noopener" style="margin-top:18px;margin-bottom:10px;display:none;">Nhận Hướng Dẫn Qua Zalo</a>
+      <button type="button" class="btn btn-ghost zalo-btn" id="closeFreeSuccessBtn">Đóng</button>
     </div>
   </div>
 </div>
 
 <script>
-  var PLAN_INFO = {
-    free:    { line: 'Miễn phí — Dùng thử · 0đ' },
-    yearly:  { line: 'Gói năm — Không giới hạn · 1.999.000đ / năm' },
-    monthly: { line: 'Gói tháng — Mở rộng quy mô · 199.000đ / tháng' }
+  // ---- Config: fill these in with real URLs. Until set, the buttons that
+  // use them stay hidden (no fake/placeholder links are shown to users). ----
+  var ZALO_SUPPORT_URL = '';  // "Liên Hệ Zalo Hỗ Trợ" — step 2 payment help + step 3 fallback
+  var ZALO_ACCOUNT_URL = '';  // "Nhận Tài Khoản Qua Zalo" — sent after payment is confirmed
+  var ZALO_GROUP_URL   = '';  // "Tham Gia Nhóm Zalo"
+
+  var SEPAY_BANK = 'VietinBank';
+  var SEPAY_ACCOUNT = '106872577734';
+  var SEPAY_HOLDER = 'VU QUANG TUNG';
+
+  // Plan copy/features mirrored verbatim from the #pricing section — this is
+  // display-only. The amount actually charged/shown in step 2 always comes
+  // from the server's /api/create-order response, never from this object.
+  var PLAN_DATA = {
+    free: {
+      name: 'Gói Miễn Phí — Dùng Thử',
+      priceLabel: '0đ',
+      cycleLabel: null,
+      badge: null,
+      tagline: 'Trải nghiệm quy trình tự động hóa trước khi nâng cấp.',
+      features: [
+        'Thêm tối đa 5 tài khoản Gmail.',
+        'Tạo khoảng 10 video/ngày.',
+        'Hàng đợi tác vụ & tự động tải về cơ bản.',
+        'Bộ mẫu Prompt TVC dùng thử.'
+      ],
+      ctaLabel: 'Xác Nhận Dùng Thử Miễn Phí',
+      afterNote: 'Thông tin hướng dẫn sử dụng sẽ được gửi qua Zalo.'
+    },
+    monthly: {
+      name: 'Gói Tháng',
+      priceLabel: '199.000đ',
+      cycleLabel: '/tháng',
+      badge: null,
+      tagline: 'Phù hợp khi bạn muốn sử dụng linh hoạt và chưa cần cam kết dài hạn.',
+      features: [
+        'Thêm tối đa 100 tài khoản Gmail.',
+        'Tạo khoảng 200 video/ngày.',
+        'Chạy đa luồng (Multi-threading).',
+        'Bộ mẫu Prompt TVC đầy đủ.',
+        'Hỗ trợ kỹ thuật qua Zalo.'
+      ],
+      ctaLabel: 'Tiếp Tục Thanh Toán 199.000đ',
+      afterNote: 'Sau khi xác nhận, bạn sẽ được chuyển sang bước thanh toán bằng mã QR.'
+    },
+    yearly: {
+      name: 'Gói Năm',
+      priceLabel: '1.999.000đ',
+      cycleLabel: '/năm',
+      badge: 'Tiết kiệm nhất',
+      tagline: 'Toàn quyền sử dụng cả năm — không giới hạn tài khoản hay số lượng video.',
+      priceNoteLines: ['Chỉ khoảng 166.600đ/tháng', 'Tiết kiệm 389.000đ so với thanh toán từng tháng.'],
+      features: [
+        'Không giới hạn tài khoản Gmail.',
+        'Không giới hạn số video/ngày.',
+        'Chạy đa luồng (Multi-threading) tối đa, tiết kiệm 80% thời gian.',
+        'Trọn bộ Prompt TVC: công nghệ, mỹ phẩm, thời trang...',
+        'Hỗ trợ kỹ thuật 1:1 ưu tiên & cập nhật phiên bản mới miễn phí trong năm.'
+      ],
+      ctaLabel: 'Tiếp Tục Thanh Toán 1.999.000đ',
+      afterNote: 'Sau khi xác nhận, bạn sẽ được chuyển sang bước thanh toán bằng mã QR.'
+    }
   };
 
-  var overlay = document.getElementById('orderOverlay');
-  var formView = document.getElementById('orderFormView');
-  var successView = document.getElementById('orderSuccessView');
-  var orderForm = document.getElementById('orderForm');
+  // No analytics SDK is installed in this project. This just dispatches a
+  // DOM CustomEvent so a future analytics integration can listen for these
+  // without any further changes here. Never pass name/phone/email in props.
+  function trackEvent(name, props){
+    try { document.dispatchEvent(new CustomEvent('seedance:' + name, { detail: props || {} })); } catch (err) {}
+  }
 
-  function selectPlan(planKey){
-    document.querySelectorAll('.plan-opt').forEach(function(opt){
-      var input = opt.querySelector('input[name="plan"]');
-      var isMatch = opt.dataset.planOpt === planKey;
-      input.checked = isMatch;
-      opt.classList.toggle('checked', isMatch);
+  function setupZaloLink(el, url){
+    if (!el) return;
+    if (url) { el.href = url; el.style.display = ''; }
+    else { el.style.display = 'none'; }
+  }
+
+  function formatVnd(n){ return Number(n).toLocaleString('vi-VN') + 'đ'; }
+
+  function maskPhone(p){
+    var digits = String(p || '').replace(/\D/g, '');
+    if (digits.length < 6) return p || '—';
+    return digits.slice(0, 2) + '•• ••• ' + digits.slice(-3);
+  }
+
+  function isValidPhone(v){
+    var cleaned = v.replace(/[\s\-.]/g, '');
+    return /^(0\d{9,10}|\+84\d{9,10})$/.test(cleaned);
+  }
+  function isValidEmail(v){
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  }
+
+  // sessionStorage only ever stores the order code/plan/amount — never name,
+  // phone or email — so a customer can close the modal mid-payment and
+  // reopen it (same tab session) without creating a duplicate order.
+  var PENDING_KEY = 'seedance_pending_order';
+  function savePendingOrder(order){
+    try { sessionStorage.setItem(PENDING_KEY, JSON.stringify({ order_code: order.order_code, plan: order.plan, amount: order.amount })); } catch (err) {}
+  }
+  function loadPendingOrder(){
+    try { var raw = sessionStorage.getItem(PENDING_KEY); return raw ? JSON.parse(raw) : null; } catch (err) { return null; }
+  }
+  function clearPendingOrder(){
+    try { sessionStorage.removeItem(PENDING_KEY); } catch (err) {}
+  }
+
+  var overlay = document.getElementById('orderOverlay');
+  var modalBox = document.getElementById('modalBox');
+  var stepIndicator = document.getElementById('stepIndicator');
+  var stepIndicatorMobile = document.getElementById('stepIndicatorMobile');
+  var stepInfo = document.getElementById('stepInfo');
+  var stepPayment = document.getElementById('stepPayment');
+  var stepSuccess = document.getElementById('stepSuccess');
+  var stepFreeSuccess = document.getElementById('stepFreeSuccess');
+  var orderForm = document.getElementById('orderForm');
+  var submitBtn = document.getElementById('submitBtn');
+
+  var currentPlanKey = 'yearly';
+  var currentOrder = null;
+  var currentCustomer = null;
+  var currentStepName = 'info';
+  var isSubmitting = false;
+  var lastFocusedTrigger = null;
+
+  var STEP_NUMBERS = { info: 1, payment: 2, success: 3, freeSuccess: 1 };
+  var STEP_TITLE_IDS = { info: 'modalTitleStep1', payment: 'modalTitleStep2', success: 'modalTitleStep3', freeSuccess: 'modalTitleFreeSuccess' };
+
+  function setStepper(stepNumber){
+    stepIndicator.querySelectorAll('.step-item').forEach(function(item){
+      var n = parseInt(item.dataset.step, 10);
+      item.classList.remove('active', 'done');
+      if (n < stepNumber) item.classList.add('done');
+      if (n === stepNumber) item.classList.add('active');
+      item.querySelector('.step-dot').textContent = n < stepNumber ? '✓' : String(n);
+    });
+    stepIndicatorMobile.textContent = 'Bước ' + stepNumber + '/3';
+  }
+
+  function showStep(name){
+    currentStepName = name;
+    stepInfo.style.display = name === 'info' ? 'block' : 'none';
+    stepPayment.style.display = name === 'payment' ? 'block' : 'none';
+    stepSuccess.style.display = name === 'success' ? 'block' : 'none';
+    stepFreeSuccess.style.display = name === 'freeSuccess' ? 'block' : 'none';
+    modalBox.setAttribute('aria-labelledby', STEP_TITLE_IDS[name]);
+    modalBox.classList.toggle('no-stepper', currentPlanKey === 'free');
+    if (currentPlanKey !== 'free') setStepper(STEP_NUMBERS[name]);
+    modalBox.scrollTop = 0;
+  }
+
+  function renderPlanSummary(planKey){
+    var plan = PLAN_DATA[planKey];
+    var html = '<button type="button" class="ps-change" id="planChangeBtn">Đổi gói</button>';
+    html += '<div class="ps-eyebrow">Gói đã chọn</div>';
+    if (plan.badge) html += '<div class="ps-badge">' + plan.badge + '</div>';
+    html += '<h3>' + plan.name + '</h3>';
+    html += '<div class="ps-price">' + plan.priceLabel + (plan.cycleLabel ? ' <small>' + plan.cycleLabel + '</small>' : '') + '</div>';
+    if (plan.priceNoteLines) {
+      plan.priceNoteLines.forEach(function(line){ html += '<div class="ps-note">' + line + '</div>'; });
+    }
+    html += '<div class="ps-tagline">' + plan.tagline + '</div>';
+    html += '<div class="ps-features">';
+    plan.features.forEach(function(f){ html += '<div><span class="tick">✓</span>' + f + '</div>'; });
+    html += '</div>';
+    html += '<div class="ps-total"><span>Tổng thanh toán</span><b>' + plan.priceLabel + '</b></div>';
+    document.getElementById('planSummary').innerHTML = html;
+    document.getElementById('planChangeBtn').addEventListener('click', function(){
+      closeOrderModal();
+      var pricingEl = document.getElementById('pricing');
+      if (pricingEl) pricingEl.scrollIntoView({ behavior: 'smooth' });
     });
   }
 
-  function openOrderModal(planKey){
+  function renderPaymentStep(order){
+    var plan = PLAN_DATA[order.plan];
+    document.getElementById('payOrderCode').textContent = order.order_code;
+    document.getElementById('payPlanName').textContent = plan.name;
+    document.getElementById('payAmount').textContent = formatVnd(order.amount);
+    var content = 'SEVQR' + order.order_code;
+    document.getElementById('payContent').textContent = content;
+    setPaymentStatusUI('pending');
+
+    var qrUrl = 'https://vietqr.app/img?bank=' + encodeURIComponent(SEPAY_BANK) +
+      '&acc=' + encodeURIComponent(SEPAY_ACCOUNT) +
+      '&template=compact&des=' + encodeURIComponent(content) +
+      '&amount=' + encodeURIComponent(order.amount) +
+      '&holder=' + encodeURIComponent(SEPAY_HOLDER);
+    document.getElementById('qrImg').src = qrUrl;
+    var dl = document.getElementById('qrDownload');
+    dl.href = qrUrl;
+    dl.download = 'seedance-auto-' + order.order_code + '.png';
+
+    setupZaloLink(document.getElementById('paySupportBtn'), ZALO_SUPPORT_URL);
+    document.getElementById('paySupportRow').style.display = ZALO_SUPPORT_URL ? 'block' : 'none';
+  }
+
+  function setPaymentStatusUI(state){
+    var text = document.getElementById('paymentStatusText');
+    var label = document.getElementById('payStatusLabel');
+    var spinner = document.getElementById('statusSpinner');
+    if (state === 'paid') {
+      text.textContent = 'Đã nhận được thanh toán!';
+      text.style.color = 'var(--green)';
+      label.textContent = 'Đã thanh toán';
+      spinner.style.display = 'none';
+    } else if (state === 'error') {
+      text.textContent = 'Chưa thể kiểm tra thanh toán. Hệ thống sẽ tự động thử lại.';
+      text.style.color = 'var(--muted)';
+    } else {
+      text.textContent = 'Đang chờ SePay xác nhận thanh toán...';
+      text.style.color = 'var(--muted)';
+    }
+  }
+
+  function renderDoneStep(order, customer){
+    var plan = PLAN_DATA[order.plan];
+    document.getElementById('doneOrderCode').textContent = order.order_code;
+    document.getElementById('donePlanName').textContent = plan.name;
+    document.getElementById('doneAmount').textContent = formatVnd(order.amount);
+    document.getElementById('doneName').textContent = (customer && customer.name) || '—';
+    document.getElementById('donePhone').textContent = customer && customer.phone ? maskPhone(customer.phone) : '—';
+    setupZaloLink(document.getElementById('doneAccountBtn'), ZALO_ACCOUNT_URL);
+    setupZaloLink(document.getElementById('doneGroupBtn'), ZALO_GROUP_URL);
+    setupZaloLink(document.getElementById('doneSupportBtn'), ZALO_SUPPORT_URL);
+  }
+
+  function renderFreeSuccess(order, customer){
+    document.getElementById('freeOrderCode').textContent = order.order_code;
+    document.getElementById('freeName').textContent = (customer && customer.name) || '—';
+    setupZaloLink(document.getElementById('freeGuideBtn'), ZALO_SUPPORT_URL);
+  }
+
+  // ---- Payment status: SePay's webhook (server-side, HMAC-verified) is the
+  // only thing that ever marks an order "paid" in Supabase. This just reads
+  // that already-confirmed status back — it never sets it. ----
+  var paymentPollTimer = null;
+  function stopPaymentPolling(){
+    if (paymentPollTimer) { clearInterval(paymentPollTimer); paymentPollTimer = null; }
+  }
+  function startPaymentPolling(orderCode){
+    stopPaymentPolling();
+    var elapsed = 0;
+    var maxWait = 5 * 60 * 1000;
+    paymentPollTimer = setInterval(function(){
+      elapsed += 4000;
+      if (elapsed >= maxWait) { stopPaymentPolling(); return; }
+      checkPaymentStatusOnce(true);
+    }, 4000);
+  }
+
+  async function checkPaymentStatusOnce(silent){
+    if (!currentOrder) return;
+    trackEvent('payment_status_check', { plan_id: currentPlanKey, order_id: currentOrder.order_code });
+    try {
+      var r = await fetch('/api/order-status?code=' + encodeURIComponent(currentOrder.order_code));
+      var d = await r.json();
+      if (d.ok && (d.status === 'paid' || d.status === 'fulfilled')) {
+        stopPaymentPolling();
+        setPaymentStatusUI('paid');
+        clearPendingOrder();
+        renderDoneStep(currentOrder, currentCustomer);
+        showStep('success');
+        trackEvent('payment_confirmed', { plan_id: currentPlanKey, order_id: currentOrder.order_code, amount: currentOrder.amount });
+      } else if (!silent) {
+        setPaymentStatusUI('pending');
+      }
+    } catch (err) {
+      if (!silent) setPaymentStatusUI('error');
+      trackEvent('payment_failed', { plan_id: currentPlanKey, order_id: currentOrder ? currentOrder.order_code : null });
+    }
+  }
+
+  function openOrderModal(planKey, triggerEl){
+    planKey = planKey || 'yearly';
+    currentPlanKey = planKey;
+    lastFocusedTrigger = triggerEl || document.activeElement;
+
     orderForm.reset();
     document.querySelectorAll('.form-field').forEach(function(f){ f.classList.remove('invalid'); });
     document.getElementById('formError').style.display = 'none';
-    formView.style.display = 'block';
-    successView.style.display = 'none';
-    selectPlan(planKey || 'yearly');
+
+    renderPlanSummary(planKey);
+    submitBtn.textContent = PLAN_DATA[planKey].ctaLabel;
+    document.getElementById('submitNote').textContent = PLAN_DATA[planKey].afterNote;
+
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
-    document.getElementById('ofName').focus();
-    stopPaymentPolling();
+
+    var pending = loadPendingOrder();
+    if (pending && pending.plan === planKey && planKey !== 'free') {
+      currentOrder = pending;
+      currentCustomer = null; // not persisted — see PENDING_KEY comment above
+      renderPaymentStep(currentOrder);
+      showStep('payment');
+      checkPaymentStatusOnce(true);
+      startPaymentPolling(currentOrder.order_code);
+    } else {
+      showStep('info');
+      document.getElementById('ofName').focus();
+    }
+
+    trackEvent('registration_modal_open', { plan_id: planKey, plan_name: PLAN_DATA[planKey].name });
   }
 
   function closeOrderModal(){
     overlay.classList.remove('open');
     document.body.style.overflow = '';
     stopPaymentPolling();
+    trackEvent('registration_modal_closed', { plan_id: currentPlanKey, current_step: currentStepName });
+    if (lastFocusedTrigger && typeof lastFocusedTrigger.focus === 'function') lastFocusedTrigger.focus();
   }
 
-  var SEPAY_BANK = 'VietinBank';
-  var SEPAY_ACCOUNT = '106872577734';
-  var SEPAY_HOLDER = 'VU QUANG TUNG';
-  var paymentPollTimer = null;
-
-  function stopPaymentPolling(){
-    if (paymentPollTimer) { clearInterval(paymentPollTimer); paymentPollTimer = null; }
-  }
-
-  function startPaymentPolling(orderCode){
-    stopPaymentPolling();
-    var elapsed = 0;
-    var maxWait = 5 * 60 * 1000;
-    paymentPollTimer = setInterval(async function(){
-      elapsed += 4000;
-      if (elapsed >= maxWait) { stopPaymentPolling(); return; }
-      try {
-        var r = await fetch('/api/order-status?code=' + encodeURIComponent(orderCode));
-        var d = await r.json();
-        if (d.ok && (d.status === 'paid' || d.status === 'fulfilled')) {
-          stopPaymentPolling();
-          var statusText = document.getElementById('paymentStatusText');
-          statusText.textContent = 'Đã nhận được thanh toán!';
-          statusText.style.color = 'var(--green)';
-          document.getElementById('qrBlock').style.display = 'none';
-          document.getElementById('paidSteps').innerHTML =
-            '<div><span class="step-num">✓</span><span>Thanh toán thành công! Nhắn Zalo kèm mã đơn hàng ở trên để nhận phần mềm ngay.</span></div>';
-        }
-      } catch (err) { /* network hiccup, keep polling */ }
-    }, 4000);
+  function trapFocus(e){
+    if (e.key !== 'Tab') return;
+    var focusable = Array.prototype.filter.call(
+      modalBox.querySelectorAll('button:not([disabled]), a[href], input, [tabindex]:not([tabindex="-1"])'),
+      function(el){ return el.offsetParent !== null; }
+    );
+    if (!focusable.length) return;
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   }
 
   document.querySelectorAll('.js-open-order').forEach(function(el){
     el.addEventListener('click', function(e){
       e.preventDefault();
-      openOrderModal(this.dataset.plan);
-    });
-  });
-
-  document.querySelectorAll('.plan-opt').forEach(function(opt){
-    opt.addEventListener('click', function(){
-      selectPlan(this.dataset.planOpt);
+      openOrderModal(this.dataset.plan, this);
     });
   });
 
   document.getElementById('modalCloseBtn').addEventListener('click', closeOrderModal);
-  document.getElementById('backToFormBtn').addEventListener('click', function(){
-    formView.style.display = 'block';
-    successView.style.display = 'none';
+  document.getElementById('closeSuccessBtn').addEventListener('click', closeOrderModal);
+  document.getElementById('closeFreeSuccessBtn').addEventListener('click', closeOrderModal);
+  document.getElementById('backToInfoBtn').addEventListener('click', function(){ showStep('info'); });
+  document.getElementById('checkPaymentBtn').addEventListener('click', function(){ checkPaymentStatusOnce(false); });
+
+  document.getElementById('copyContentBtn').addEventListener('click', async function(){
+    var btn = this;
+    var text = document.getElementById('payContent').textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      btn.textContent = 'Đã sao chép';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.textContent = 'Sao Chép Nội Dung'; btn.classList.remove('copied'); }, 2000);
+    } catch (err) { /* clipboard unavailable, ignore */ }
   });
+
+  ['doneAccountBtn', 'doneGroupBtn', 'doneSupportBtn'].forEach(function(id){
+    var eventMap = { doneAccountBtn: 'zalo_account_clicked', doneGroupBtn: 'zalo_group_clicked', doneSupportBtn: 'zalo_support_clicked' };
+    document.getElementById(id).addEventListener('click', function(){
+      trackEvent(eventMap[id], { plan_id: currentPlanKey, order_id: currentOrder ? currentOrder.order_code : null });
+    });
+  });
+  document.getElementById('paySupportBtn').addEventListener('click', function(){
+    trackEvent('zalo_support_clicked', { plan_id: currentPlanKey, order_id: currentOrder ? currentOrder.order_code : null, current_step: 'payment' });
+  });
+  document.getElementById('freeGuideBtn').addEventListener('click', function(){
+    trackEvent('zalo_support_clicked', { plan_id: 'free', order_id: currentOrder ? currentOrder.order_code : null, current_step: 'freeSuccess' });
+  });
+
   overlay.addEventListener('click', function(e){
     if (e.target === overlay) closeOrderModal();
   });
   document.addEventListener('keydown', function(e){
-    if (e.key === 'Escape' && overlay.classList.contains('open')) closeOrderModal();
+    if (!overlay.classList.contains('open')) return;
+    if (e.key === 'Escape') { closeOrderModal(); return; }
+    trapFocus(e);
   });
 
   orderForm.addEventListener('submit', async function(e){
     e.preventDefault();
+    if (isSubmitting) return;
 
     var nameField = document.getElementById('fieldName');
     var phoneField = document.getElementById('fieldPhone');
+    var emailField = document.getElementById('fieldEmail');
     var nameInput = document.getElementById('ofName');
     var phoneInput = document.getElementById('ofPhone');
     var emailInput = document.getElementById('ofEmail');
     var errorBox = document.getElementById('formError');
-    var submitBtn = document.getElementById('submitBtn');
-    var valid = true;
 
-    if (!nameInput.value.trim()){ nameField.classList.add('invalid'); valid = false; }
-    else { nameField.classList.remove('invalid'); }
-
-    if (!phoneInput.value.trim()){ phoneField.classList.add('invalid'); valid = false; }
-    else { phoneField.classList.remove('invalid'); }
-
+    [nameField, phoneField, emailField].forEach(function(f){ f.classList.remove('invalid'); });
     errorBox.style.display = 'none';
-    if (!valid) return;
 
-    var planKey = document.querySelector('input[name="plan"]:checked').value;
+    var nameVal = nameInput.value.trim();
+    var phoneVal = phoneInput.value.trim();
+    var emailVal = emailInput.value.trim();
+    var firstInvalid = null;
 
+    if (!nameVal) {
+      nameField.classList.add('invalid');
+      firstInvalid = firstInvalid || nameInput;
+    }
+    if (!phoneVal) {
+      phoneField.classList.add('invalid');
+      document.getElementById('errPhone').textContent = 'Vui lòng nhập số điện thoại/Zalo.';
+      firstInvalid = firstInvalid || phoneInput;
+    } else if (!isValidPhone(phoneVal)) {
+      phoneField.classList.add('invalid');
+      document.getElementById('errPhone').textContent = 'Số điện thoại chưa đúng định dạng.';
+      firstInvalid = firstInvalid || phoneInput;
+    }
+    if (emailVal && !isValidEmail(emailVal)) {
+      emailField.classList.add('invalid');
+      firstInvalid = firstInvalid || emailInput;
+    }
+
+    if (firstInvalid) { firstInvalid.focus(); return; }
+
+    // Reuse a still-pending order for this plan instead of creating a
+    // duplicate row if the customer went back and pressed continue again.
+    var pending = loadPendingOrder();
+    if (pending && pending.plan === currentPlanKey && currentPlanKey !== 'free') {
+      currentOrder = pending;
+      currentCustomer = { name: nameVal, phone: phoneVal, email: emailVal };
+      renderPaymentStep(currentOrder);
+      showStep('payment');
+      startPaymentPolling(currentOrder.order_code);
+      return;
+    }
+
+    isSubmitting = true;
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Đang gửi...';
+    var originalLabel = submitBtn.textContent;
+    submitBtn.textContent = 'Đang tạo đơn hàng...';
+
+    trackEvent('registration_information_submit', { plan_id: currentPlanKey, plan_name: PLAN_DATA[currentPlanKey].name });
 
     try {
       var res = await fetch('/api/create-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: nameInput.value.trim(),
-          phone: phoneInput.value.trim(),
-          email: emailInput.value.trim(),
-          plan: planKey
-        })
+        body: JSON.stringify({ name: nameVal, phone: phoneVal, email: emailVal, plan: currentPlanKey })
       });
       var payload = await res.json();
+      if (!res.ok || !payload.ok) throw new Error(payload.error || 'Có lỗi xảy ra, vui lòng thử lại.');
 
-      if (!res.ok || !payload.ok) {
-        throw new Error(payload.error || 'Có lỗi xảy ra, vui lòng thử lại.');
-      }
+      currentOrder = payload.order;
+      currentCustomer = { name: nameVal, phone: phoneVal, email: emailVal };
 
-      document.getElementById('successPlanLine').textContent = PLAN_INFO[planKey].line;
-      document.getElementById('successCode').textContent = payload.order.order_code;
-      document.getElementById('paidSteps').style.display = planKey === 'free' ? 'none' : 'flex';
-      document.getElementById('freeSteps').style.display = planKey === 'free' ? 'flex' : 'none';
-
-      var qrBlock = document.getElementById('qrBlock');
-      var statusBox = document.getElementById('paymentStatusBox');
-      if (planKey === 'free') {
-        qrBlock.style.display = 'none';
-        statusBox.style.display = 'none';
+      if (currentPlanKey === 'free') {
+        renderFreeSuccess(currentOrder, currentCustomer);
+        showStep('freeSuccess');
+        trackEvent('free_registration_completed', { plan_id: 'free', order_id: currentOrder.order_code });
       } else {
-        var qrContent = 'SEVQR' + payload.order.order_code;
-        var qrUrl = 'https://vietqr.app/img?bank=' + encodeURIComponent(SEPAY_BANK) +
-          '&acc=' + encodeURIComponent(SEPAY_ACCOUNT) +
-          '&template=compact&des=' + encodeURIComponent(qrContent) +
-          '&amount=' + encodeURIComponent(payload.order.amount) +
-          '&holder=' + encodeURIComponent(SEPAY_HOLDER);
-        document.getElementById('qrImg').src = qrUrl;
-        qrBlock.style.display = 'block';
-        var statusText = document.getElementById('paymentStatusText');
-        statusText.textContent = 'Đang chờ thanh toán…';
-        statusText.style.color = 'var(--muted)';
-        statusBox.style.display = 'block';
-        startPaymentPolling(payload.order.order_code);
+        savePendingOrder(currentOrder);
+        renderPaymentStep(currentOrder);
+        showStep('payment');
+        startPaymentPolling(currentOrder.order_code);
+        trackEvent('payment_qr_displayed', { plan_id: currentPlanKey, amount: currentOrder.amount, order_id: currentOrder.order_code });
       }
-
-      formView.style.display = 'none';
-      successView.style.display = 'block';
     } catch (err) {
       errorBox.textContent = err.message || 'Không thể kết nối máy chủ, vui lòng thử lại.';
       errorBox.style.display = 'block';
     } finally {
+      isSubmitting = false;
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Xác Nhận Đăng Ký';
+      submitBtn.textContent = originalLabel;
     }
   });
 
