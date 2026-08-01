@@ -3,7 +3,7 @@ const { createClient } = require('@supabase/supabase-js');
 const PLAN_PRICES = {
   free: 0,
   yearly: 1999000,
-  monthly: 199000,
+  monthly: 2000,
 };
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
