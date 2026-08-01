@@ -9,9 +9,12 @@ const PLAN_PRICES = {
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 function generateOrderCode() {
+  // No hyphen: this code is embedded verbatim in the bank transfer content
+  // (SEVQR + code) and matched back out of it by api/sepay-webhook.js, so it
+  // stays plain alphanumeric to survive bank content field normalization.
   const ts = Date.now().toString(36).toUpperCase();
   const rand = Math.random().toString(36).slice(2, 6).toUpperCase();
-  return `SDA-${ts}${rand}`;
+  return `SDA${ts}${rand}`;
 }
 
 module.exports = async (req, res) => {

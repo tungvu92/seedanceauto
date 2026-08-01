@@ -846,10 +846,17 @@
         <div class="code" id="successCode">SDA000000</div>
       </div>
 
+      <div id="qrBlock" style="display:none;">
+        <img id="qrImg" alt="Mã QR thanh toán VietQR — nội dung chuyển khoản đã điền sẵn" style="width:100%;max-width:220px;border-radius:12px;border:1px solid var(--border);margin:0 auto 14px;display:block;">
+      </div>
+      <div id="paymentStatusBox" style="display:none;font-size:13px;font-weight:700;margin-bottom:18px;">
+        <span id="paymentStatusText" style="color:var(--muted);">Đang chờ thanh toán…</span>
+      </div>
+
       <div id="paidSteps" class="order-steps">
-        <div><span class="step-num">1</span><span>Chuyển khoản đúng số tiền, ghi <b>nội dung chuyển khoản là mã đơn hàng</b> ở trên.</span></div>
-        <div><span class="step-num">2</span><span>Chụp lại ảnh giao dịch thành công.</span></div>
-        <div><span class="step-num">3</span><span>Nhắn Zalo kèm mã đơn hàng + ảnh giao dịch để nhận phần mềm ngay.</span></div>
+        <div><span class="step-num">1</span><span>Quét mã QR ở trên bằng app ngân hàng — số tiền và nội dung đã được điền sẵn.</span></div>
+        <div><span class="step-num">2</span><span>Hệ thống tự động nhận diện thanh toán trong khoảng 1–2 phút, không cần thao tác thêm.</span></div>
+        <div><span class="step-num">3</span><span>Chưa thấy xác nhận sau vài phút? Nhắn Zalo kèm mã đơn hàng ở trên để được hỗ trợ.</span></div>
       </div>
       <div id="freeSteps" class="order-steps" style="display:none;">
         <div><span class="step-num">1</span><span>Chúng tôi sẽ gửi link tải bản dùng thử qua email/Zalo bạn vừa đăng ký trong ít phút.</span></div>
@@ -893,11 +900,45 @@
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     document.getElementById('ofName').focus();
+    stopPaymentPolling();
   }
 
   function closeOrderModal(){
     overlay.classList.remove('open');
     document.body.style.overflow = '';
+    stopPaymentPolling();
+  }
+
+  var SEPAY_BANK = 'VietinBank';
+  var SEPAY_ACCOUNT = '106872577734';
+  var SEPAY_HOLDER = 'VU QUANG TUNG';
+  var paymentPollTimer = null;
+
+  function stopPaymentPolling(){
+    if (paymentPollTimer) { clearInterval(paymentPollTimer); paymentPollTimer = null; }
+  }
+
+  function startPaymentPolling(orderCode){
+    stopPaymentPolling();
+    var elapsed = 0;
+    var maxWait = 5 * 60 * 1000;
+    paymentPollTimer = setInterval(async function(){
+      elapsed += 4000;
+      if (elapsed >= maxWait) { stopPaymentPolling(); return; }
+      try {
+        var r = await fetch('/api/order-status?code=' + encodeURIComponent(orderCode));
+        var d = await r.json();
+        if (d.ok && (d.status === 'paid' || d.status === 'fulfilled')) {
+          stopPaymentPolling();
+          var statusText = document.getElementById('paymentStatusText');
+          statusText.textContent = 'Đã nhận được thanh toán!';
+          statusText.style.color = 'var(--green)';
+          document.getElementById('qrBlock').style.display = 'none';
+          document.getElementById('paidSteps').innerHTML =
+            '<div><span class="step-num">✓</span><span>Thanh toán thành công! Nhắn Zalo kèm mã đơn hàng ở trên để nhận phần mềm ngay.</span></div>';
+        }
+      } catch (err) { /* network hiccup, keep polling */ }
+    }, 4000);
   }
 
   document.querySelectorAll('.js-open-order').forEach(function(el){
@@ -972,6 +1013,27 @@
       document.getElementById('successCode').textContent = payload.order.order_code;
       document.getElementById('paidSteps').style.display = planKey === 'free' ? 'none' : 'flex';
       document.getElementById('freeSteps').style.display = planKey === 'free' ? 'flex' : 'none';
+
+      var qrBlock = document.getElementById('qrBlock');
+      var statusBox = document.getElementById('paymentStatusBox');
+      if (planKey === 'free') {
+        qrBlock.style.display = 'none';
+        statusBox.style.display = 'none';
+      } else {
+        var qrContent = 'SEVQR' + payload.order.order_code;
+        var qrUrl = 'https://vietqr.app/img?bank=' + encodeURIComponent(SEPAY_BANK) +
+          '&acc=' + encodeURIComponent(SEPAY_ACCOUNT) +
+          '&template=compact&des=' + encodeURIComponent(qrContent) +
+          '&amount=' + encodeURIComponent(payload.order.amount) +
+          '&holder=' + encodeURIComponent(SEPAY_HOLDER);
+        document.getElementById('qrImg').src = qrUrl;
+        qrBlock.style.display = 'block';
+        var statusText = document.getElementById('paymentStatusText');
+        statusText.textContent = 'Đang chờ thanh toán…';
+        statusText.style.color = 'var(--muted)';
+        statusBox.style.display = 'block';
+        startPaymentPolling(payload.order.order_code);
+      }
 
       formView.style.display = 'none';
       successView.style.display = 'block';
