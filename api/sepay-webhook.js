@@ -12,11 +12,12 @@ function readRawBody(req) {
   });
 }
 
-function signatureMatches(rawBody, signature, secret) {
-  if (!signature) return false;
-  // SePay sends the header as "sha256=<hex>", not the bare hex digest.
+function signatureMatches(rawBody, timestamp, signature, secret) {
+  if (!signature || !timestamp) return false;
+  // SePay signs `${timestamp}.${rawBody}` and sends the header as
+  // "sha256=<hex>" (X-Sepay-Signature), alongside X-Sepay-Timestamp.
   const received = signature.replace(/^sha256=/i, '');
-  const expected = crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
+  const expected = crypto.createHmac('sha256', secret).update(timestamp + '.' + rawBody).digest('hex');
   const a = Buffer.from(received);
   const b = Buffer.from(expected);
   if (a.length !== b.length) return false;
@@ -31,39 +32,11 @@ module.exports = async (req, res) => {
 
   const rawBody = await readRawBody(req);
   const signature = req.headers['x-sepay-signature'];
+  const timestamp = req.headers['x-sepay-timestamp'];
 
-  if (!signatureMatches(rawBody, signature, process.env.SEPAY_WEBHOOK_SECRET)) {
-    // TEMPORARY debug output (remove once signature verification is
-    // confirmed working) — none of this reveals the secret itself, only
-    // header names/values and the computed digest, so it's safe to read
-    // directly from the response.
-    var candidateHeaders = {};
-    Object.keys(req.headers).forEach(function (k) {
-      if (k.indexOf('sign') !== -1 || k.indexOf('sepay') !== -1 || k.indexOf('hmac') !== -1) {
-        candidateHeaders[k] = req.headers[k];
-      }
-    });
-    var expectedDebug = process.env.SEPAY_WEBHOOK_SECRET
-      ? crypto.createHmac('sha256', process.env.SEPAY_WEBHOOK_SECRET).update(rawBody).digest('hex')
-      : null;
-    console.error('sepay-webhook: invalid or missing signature', {
-      candidateHeaders: candidateHeaders,
-      receivedSignatureStripped: signature ? signature.replace(/^sha256=/i, '') : null,
-      expectedSignature: expectedDebug,
-      hasSecretEnv: !!process.env.SEPAY_WEBHOOK_SECRET,
-      bodyLength: rawBody.length,
-      rawBody: rawBody,
-    });
-    res.status(401).json({
-      ok: false,
-      error: 'invalid signature',
-      debug: {
-        candidateHeaders: candidateHeaders,
-        expectedSignature: expectedDebug,
-        hasSecretEnv: !!process.env.SEPAY_WEBHOOK_SECRET,
-        bodyLength: rawBody.length,
-      },
-    });
+  if (!signatureMatches(rawBody, timestamp, signature, process.env.SEPAY_WEBHOOK_SECRET)) {
+    console.error('sepay-webhook: invalid signature');
+    res.status(401).json({ ok: false, error: 'invalid signature' });
     return;
   }
 
