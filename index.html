@@ -976,9 +976,9 @@
 <script>
   // ---- Config: fill these in with real URLs. Until set, the buttons that
   // use them stay hidden (no fake/placeholder links are shown to users). ----
-  var ZALO_SUPPORT_URL = '';  // "Liên Hệ Zalo Hỗ Trợ" — step 2 payment help + step 3 fallback
-  var ZALO_ACCOUNT_URL = '';  // "Nhận Tài Khoản Qua Zalo" — sent after payment is confirmed
-  var ZALO_GROUP_URL   = '';  // "Tham Gia Nhóm Zalo"
+  var ZALO_SUPPORT_URL = 'https://zalo.me/0978007638';  // "Liên Hệ Zalo Hỗ Trợ" — step 2 payment help + step 3 fallback
+  var ZALO_ACCOUNT_URL = 'https://zalo.me/0978007638';  // "Nhận Tài Khoản Qua Zalo" — sent after payment is confirmed
+  var ZALO_GROUP_URL   = 'https://zalo.me/0978007638';  // "Tham Gia Nhóm Zalo"
 
   var SEPAY_BANK = 'VietinBank';
   var SEPAY_ACCOUNT = '106872577734';
@@ -1196,9 +1196,14 @@
     document.getElementById('doneAmount').textContent = formatVnd(order.amount);
     document.getElementById('doneName').textContent = (customer && customer.name) || '—';
     document.getElementById('donePhone').textContent = customer && customer.phone ? maskPhone(customer.phone) : '—';
+
+    // Avoid showing multiple buttons pointing at the exact same Zalo link:
+    // account link always shows first if set, then group/support only show
+    // as separate buttons when they're actually a different URL.
     setupZaloLink(document.getElementById('doneAccountBtn'), ZALO_ACCOUNT_URL);
-    setupZaloLink(document.getElementById('doneGroupBtn'), ZALO_GROUP_URL);
-    setupZaloLink(document.getElementById('doneSupportBtn'), ZALO_SUPPORT_URL);
+    setupZaloLink(document.getElementById('doneGroupBtn'), ZALO_GROUP_URL && ZALO_GROUP_URL !== ZALO_ACCOUNT_URL ? ZALO_GROUP_URL : '');
+    var supportDiffers = ZALO_SUPPORT_URL && ZALO_SUPPORT_URL !== ZALO_ACCOUNT_URL && ZALO_SUPPORT_URL !== ZALO_GROUP_URL;
+    setupZaloLink(document.getElementById('doneSupportBtn'), supportDiffers ? ZALO_SUPPORT_URL : '');
   }
 
   function renderFreeSuccess(order, customer){
