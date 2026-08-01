@@ -14,8 +14,10 @@ function readRawBody(req) {
 
 function signatureMatches(rawBody, signature, secret) {
   if (!signature) return false;
+  // SePay sends the header as "sha256=<hex>", not the bare hex digest.
+  const received = signature.replace(/^sha256=/i, '');
   const expected = crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
-  const a = Buffer.from(signature);
+  const a = Buffer.from(received);
   const b = Buffer.from(expected);
   if (a.length !== b.length) return false;
   return crypto.timingSafeEqual(a, b);
@@ -45,15 +47,17 @@ module.exports = async (req, res) => {
       ? crypto.createHmac('sha256', process.env.SEPAY_WEBHOOK_SECRET).update(rawBody).digest('hex')
       : null;
     console.error('sepay-webhook: invalid or missing signature', {
-      allHeaderNames: Object.keys(req.headers),
       candidateHeaders: candidateHeaders,
+      receivedSignatureStripped: signature ? signature.replace(/^sha256=/i, '') : null,
+      expectedSignature: expectedDebug,
       hasSecretEnv: !!process.env.SEPAY_WEBHOOK_SECRET,
+      bodyLength: rawBody.length,
+      rawBody: rawBody,
     });
     res.status(401).json({
       ok: false,
       error: 'invalid signature',
       debug: {
-        allHeaderNames: Object.keys(req.headers),
         candidateHeaders: candidateHeaders,
         expectedSignature: expectedDebug,
         hasSecretEnv: !!process.env.SEPAY_WEBHOOK_SECRET,
